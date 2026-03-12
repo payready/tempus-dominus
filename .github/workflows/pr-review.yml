@@ -1,0 +1,16 @@
+name: PR Review
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  review:
+    if: >-
+      github.event.pull_request.draft == false &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-review')
+    uses: payready/agent-tools/.github/workflows/pr-review.yml@main
+    with:
+      enforcement_mode: comment_only
+    secrets: inherit
